@@ -1,0 +1,33 @@
+<!-- you will need a CORS plugin for this to work. https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi/related?hl=en-->
+<head>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<section>
+  <h1>Datto Dashboard</h1>
+  <body>
+  <button type="button" onclick="myTimer()">Refresh</button>
+  <button type="button" id="pause" onclick="change()">Pause AutoRefresh</button>
+  <br><br>
+  <p id="demo">Last Refresh (5 min intervals): </p>
+  <div id="textDiv"></div>
+  <br>
+  <div class="tbl-header" id="MainTable">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <th><h2>Hostname</h1></th>
+        <th><h2>Last Seen</h1></th>
+        <th><h2>Used Space</h1></th>
+        <th><h2>Free Space</h1></th>
+        <th><h2>Total Space</h1></th>
+        <th><h2>Percent Free</h1></th>
+        <th><h2>Load Average</h1></th>
+    </table>
+  </div>
+  <div class="tbl-content">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tbody id="BodyRows"></tbody>
+      <script type"text/javascript" src="dashboard.js"></script>
+    </table>
+  </div>
+</body>
+</section>

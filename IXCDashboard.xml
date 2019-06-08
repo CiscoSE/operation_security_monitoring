@@ -1,0 +1,93 @@
+<form theme="light">
+  <label>IXC Dashboard</label>
+  <fieldset submitButton="false"></fieldset>
+  <row>
+    <panel>
+      <title>Login attempts on the VMs</title>
+      <input type="dropdown" token="tokenhostname">
+        <label>Filter by Hostname</label>
+        <choice value="*">All</choice>
+        <fieldForLabel>host</fieldForLabel>
+        <fieldForValue>host</fieldForValue>
+        <search>
+          <query>10.113.108.* Keywords="Audit*" | stats values(_time) count by host</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <default>*</default>
+      </input>
+      <input type="dropdown" token="tokenloginstat">
+        <label>Filter by LoginStat</label>
+        <choice value="*">All</choice>
+        <default>*</default>
+        <fieldForLabel>Keywords</fieldForLabel>
+        <fieldForValue>Keywords</fieldForValue>
+        <search>
+          <query>10.113.108.* Keywords="Audit*" | stats values(_time) count by Keywords</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+      </input>
+      <table>
+        <title>Logins and Login attempts on all the VMs in the IP range of 10.113.108.0 - 10.113.108.255</title>
+        <search>
+          <query>10.113.108.* Keywords="Audit*" | rename host AS "Hostname", Keywords AS "LoginStat", Workstation_Name AS "IP", Account_Name AS "Username" | search Hostname="$tokenhostname$", LoginStat="$tokenloginstat$", IP=* | table _time, Hostname, IP, Username, LoginStat | fields - source, sourcetype, index, linecount, splunk_server, _raw, Message</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <refresh>2m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Running Processes on the VMs</title>
+      <input type="dropdown" token="hostprocesses">
+        <label>Filter by Hostname</label>
+        <choice value="*">All</choice>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <fieldForLabel>host</fieldForLabel>
+        <fieldForValue>host</fieldForValue>
+        <search>
+          <query>sourcetype="winhostmon" | stats values(_time) count by host</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+      </input>
+      <input type="dropdown" token="tokenprocesses">
+        <label>Filter by Processes</label>
+        <choice value="*">All</choice>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <fieldForLabel>Name</fieldForLabel>
+        <fieldForValue>Name</fieldForValue>
+        <search>
+          <query>sourcetype="winhostmon" | stats values(_time) count by Name</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+      </input>
+      <table>
+        <title>Running Processes with Start Time (Data Refreshed every 15 min)</title>
+        <search>
+          <query>sourcetype="winhostmon" host="vm10.113.108.*" NOT Name="splunk*", NOT Name="svchost.exe" NOT Name="explorer.exe" NOT Name="dllhost.exe" NOT Name="winlogon.exe" NOT Name="conhost.exe" NOT Name="System Idle Process" NOT Name="spoolsv.exe" NOT Name="System" NOT Name="lsass.exe" NOT Name="wininit.exe" | rename host AS "Hostname" | table _time, Hostname, Name | search Hostname="$hostprocesses$", Name="$tokenprocesses$"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="color" field="Name">
+          <colorPalette type="map">{"TeamViewer.exe":#DC4E41,"TeamViewer_Service.exe":#DC4E41}</colorPalette>
+        </format>
+      </table>
+    </panel>
+  </row>
+</form>
