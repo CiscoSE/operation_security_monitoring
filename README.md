@@ -5,7 +5,7 @@
 
 ## Motivation
 
-The IC has over 100 VMs, with the majority of these being Windows based. These are used by partners for developing applications and integrations.
+The customer has over 100 VMs, with the majority of these being Windows based. These are used by partners for developing applications and integrations.
 
 Many of these apps can have applications require remote access and support, yet no login details of these sessions are available. The solution which should be used to have control over the credentials is WebEx Remote access only (i.e., no TeamViewer access)
 
