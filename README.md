@@ -15,6 +15,9 @@ Need to leverage the security architecture in the IC to have a comprehensive mon
 
 See below the high-level project workflow:
 
+
+<img width="995" alt="image" src="https://user-images.githubusercontent.com/43951925/60275975-00d9d580-98fb-11e9-916a-17214760f393.jpg">
+
 <img width="995" alt="image" src="https://user-images.githubusercontent.com/43951925/59883949-fe392680-93b6-11e9-9f81-4239848ac3c3.png">
 
 
